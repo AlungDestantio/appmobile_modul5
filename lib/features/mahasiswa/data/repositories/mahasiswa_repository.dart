@@ -23,11 +23,11 @@ class MahasiswaRepository {
         angkatan: '2024',
       ),
       MahasiswaModel(
-        nama: 'Ahmad Fauzi',
-        nim: '2022001',
-        email: 'ahmad.fauzi@example.com',
+        nama: 'Nabil Hakim',
+        nim: '434241055',
+        email: 'nabilhakim@vokasi.com',
         jurusan: 'Teknik Informatika',
-        angkatan: '2022',
+        angkatan: '2024',
       ),
       MahasiswaModel(
         nama: 'Dewi Lestari',
