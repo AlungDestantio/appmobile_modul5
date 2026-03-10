@@ -9,39 +9,39 @@ class MahasiswaRepository {
     // Data dummy mahasiswa
     return [
       MahasiswaModel(
-        nama: 'Alung Destantio',
+        nama: 'Alung Destantio Cahya Utama Putra',
         nim: '434241001',
         email: 'alungdestantio@vokasi.com',
         jurusan: 'Teknik Informatika',
         angkatan: '2024',
       ),
       MahasiswaModel(
-        nama: 'Stevano Neovan',
+        nama: 'Stevano Neovan Eka Firdaus',
         nim: '434241113',
         email: 'stevanoneovan@vokasi.com',
         jurusan: 'Teknik Informatika',
         angkatan: '2024',
       ),
       MahasiswaModel(
-        nama: 'Nabil Hakim',
+        nama: 'Nabil Hakim Alfikri',
         nim: '434241055',
         email: 'nabilhakim@vokasi.com',
         jurusan: 'Teknik Informatika',
         angkatan: '2024',
       ),
       MahasiswaModel(
-        nama: 'Dewi Lestari',
-        nim: '2022002',
-        email: 'dewi.lestari@example.com',
+        nama: 'Javier Raka Abhista',
+        nim: '434241078',
+        email: 'javierraka@vokasi.com',
         jurusan: 'Teknik Informatika',
-        angkatan: '2022',
+        angkatan: '2024',
       ),
       MahasiswaModel(
-        nama: 'Eko Prasetyo',
-        nim: '2023001',
-        email: 'eko.prasetyo@example.com',
+        nama: 'Muhammad Irfan Nuha',
+        nim: '434241099',
+        email: 'irfannuha@vokasi.com',
         jurusan: 'Teknik Informatika',
-        angkatan: '2023',
+        angkatan: '2024',
       ),
     ];
   }
