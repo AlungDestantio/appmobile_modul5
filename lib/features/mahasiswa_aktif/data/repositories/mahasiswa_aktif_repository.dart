@@ -1,12 +1,11 @@
 import 'package:d4tivokasi/features/mahasiswa_aktif/data/models/mahasiswa_aktif_model.dart';
 
 class MahasiswaAktifRepository {
-  /// Mendapatkan daftar mahasiswa aktif
+  
   Future<List<MahasiswaAktifModel>> getMahasiswaAktifList() async {
-    // Simulasi network delay
+
     await Future.delayed(const Duration(seconds: 1));
 
-    // Data dummy mahasiswa aktif
     return [
       MahasiswaAktifModel(
         nama: 'Alung Destantio Cahya Utama Putra',
