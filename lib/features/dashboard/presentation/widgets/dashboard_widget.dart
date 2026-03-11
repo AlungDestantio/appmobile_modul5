@@ -316,36 +316,3 @@ class _ModernStatCardState extends State<ModernStatCard>
     ); // GestureDetector
   }
 }
-
-// DosenListView widget (dipakai di dosen_page)
-class DosenListView extends StatelessWidget {
-  final List<dynamic> dosenList;
-  final VoidCallback? onRefresh;
-  final bool useModernCard;
-
-  const DosenListView({
-    Key? key,
-    required this.dosenList,
-    this.onRefresh,
-    this.useModernCard = true,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    if (dosenList.isEmpty) {
-      return const Center(child: Text('Tidak ada data dosen'));
-    }
-    return RefreshIndicator(
-      onRefresh: () async {
-        onRefresh?.call();
-      },
-      child: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: dosenList.length,
-        itemBuilder: (context, index) {
-          return dosenList[index];
-        },
-      ),
-    );
-  }
-}
