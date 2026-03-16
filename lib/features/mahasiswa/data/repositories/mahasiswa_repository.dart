@@ -1,48 +1,24 @@
 import 'package:d4tivokasi/features/mahasiswa/data/models/mahasiswa_model.dart';
+import 'package:dio/dio.dart';
 
 class MahasiswaRepository {
-  /// Mendapatkan daftar mahasiswa
-  Future<List<MahasiswaModel>> getMahasiswaList() async {
-    // Simulasi network delay
-    await Future.delayed(const Duration(seconds: 1));
+  final Dio _dio = Dio();
 
-    // Data dummy mahasiswa
-    return [
-      MahasiswaModel(
-        nama: 'Alung Destantio Cahya Utama Putra',
-        nim: '434241001',
-        email: 'alungdestantio@vokasi.com',
-        jurusan: 'Teknik Informatika',
-        angkatan: '2024',
-      ),
-      MahasiswaModel(
-        nama: 'Stevano Neovan Eka Firdaus',
-        nim: '434241113',
-        email: 'stevanoneovan@vokasi.com',
-        jurusan: 'Teknik Informatika',
-        angkatan: '2024',
-      ),
-      MahasiswaModel(
-        nama: 'Nabil Hakim Alfikri',
-        nim: '434241055',
-        email: 'nabilhakim@vokasi.com',
-        jurusan: 'Teknik Informatika',
-        angkatan: '2024',
-      ),
-      MahasiswaModel(
-        nama: 'Javier Raka Abhista',
-        nim: '434241078',
-        email: 'javierraka@vokasi.com',
-        jurusan: 'Teknik Informatika',
-        angkatan: '2024',
-      ),
-      MahasiswaModel(
-        nama: 'Muhammad Irfan Nuha',
-        nim: '434241099',
-        email: 'irfannuha@vokasi.com',
-        jurusan: 'Teknik Informatika',
-        angkatan: '2024',
-      ),
-    ];
+  /// Mendapatkan daftar mahasiswa menggunakan Dio
+  Future<List<MahasiswaModel>> getMahasiswaList() async {
+    final response = await _dio.get(
+      'https://jsonplaceholder.typicode.com/comments',
+      options: Options(headers: {'Accept': 'application/json'}),
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = response.data;
+      print(data); // Debug: Tampilkan data yang sudah di-decode
+      return data.map((json) => MahasiswaModel.fromJson(json)).toList();
+    } else {
+      print('Error: ${response.statusCode}');
+      throw Exception('Gagal memuat data mahasiswa: ${response.statusCode}');
+    }
   }
 }
+

@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:d4tivokasi/core/constants/constants.dart';
 import 'package:d4tivokasi/features/mahasiswa/data/models/mahasiswa_model.dart';
 
-class MahasiswaCard extends StatefulWidget {
+class ModernMahasiswaCard extends StatefulWidget {
   final MahasiswaModel mahasiswa;
-  final List<Color>? gradientColors;
   final VoidCallback? onTap;
+  final List<Color>? gradientColors;
 
-  const MahasiswaCard({
+  const ModernMahasiswaCard({
     Key? key,
     required this.mahasiswa,
-    this.gradientColors,
     this.onTap,
+    this.gradientColors,
   }) : super(key: key);
 
   @override
-  State<MahasiswaCard> createState() => _MahasiswaCardState();
+  State<ModernMahasiswaCard> createState() => _ModernMahasiswaCardState();
 }
 
-class _MahasiswaCardState extends State<MahasiswaCard>
+class _ModernMahasiswaCardState extends State<ModernMahasiswaCard>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
@@ -44,9 +44,12 @@ class _MahasiswaCardState extends State<MahasiswaCard>
 
   @override
   Widget build(BuildContext context) {
-    final colors =
+    final gradientColors =
         widget.gradientColors ??
-        AppConstants.gradientPurple;
+        [
+          Theme.of(context).primaryColor,
+          Theme.of(context).primaryColor.withOpacity(0.7),
+        ];
 
     return GestureDetector(
       onTapDown: (_) => _controller.forward(),
@@ -63,21 +66,18 @@ class _MahasiswaCardState extends State<MahasiswaCard>
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
-                Colors.white,
-                colors[0].withOpacity(0.05),
-              ],
+              colors: [Colors.white, gradientColors[0].withOpacity(0.05)],
             ),
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: colors[0].withOpacity(0.1),
+                color: gradientColors[0].withOpacity(0.1),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
             ],
             border: Border.all(
-              color: colors[0].withOpacity(0.1),
+              color: gradientColors[0].withOpacity(0.1),
               width: 1,
             ),
           ),
@@ -93,12 +93,12 @@ class _MahasiswaCardState extends State<MahasiswaCard>
                     gradient: LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: colors,
+                      colors: gradientColors,
                     ),
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: colors[0].withOpacity(0.3),
+                        color: gradientColors[0].withOpacity(0.3),
                         blurRadius: 8,
                         offset: const Offset(0, 4),
                       ),
@@ -106,7 +106,11 @@ class _MahasiswaCardState extends State<MahasiswaCard>
                   ),
                   child: Center(
                     child: Text(
-                      widget.mahasiswa.nama.substring(0, 1).toUpperCase(),
+                      widget.mahasiswa.name.isNotEmpty
+                          ? widget.mahasiswa.name
+                              .substring(0, 1)
+                              .toUpperCase()
+                          : '?',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 24,
@@ -123,7 +127,7 @@ class _MahasiswaCardState extends State<MahasiswaCard>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.mahasiswa.nama,
+                        widget.mahasiswa.name,
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -134,18 +138,18 @@ class _MahasiswaCardState extends State<MahasiswaCard>
                       ),
                       const SizedBox(height: 8),
                       _buildInfoRow(
-                        Icons.badge_outlined,
-                        'NIM: ${widget.mahasiswa.nim}',
-                      ),
-                      const SizedBox(height: 4),
-                      _buildInfoRow(
                         Icons.email_outlined,
                         widget.mahasiswa.email,
                       ),
                       const SizedBox(height: 4),
                       _buildInfoRow(
-                        Icons.calendar_today_outlined,
-                        'Angkatan: ${widget.mahasiswa.angkatan}',
+                        Icons.comment_outlined,
+                        widget.mahasiswa.body,
+                      ),
+                      const SizedBox(height: 4),
+                      _buildInfoRow(
+                        Icons.tag_outlined,
+                        'Post ID: ${widget.mahasiswa.postId}',
                       ),
                     ],
                   ),
@@ -155,13 +159,13 @@ class _MahasiswaCardState extends State<MahasiswaCard>
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: colors[0].withOpacity(0.1),
+                    color: gradientColors[0].withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(
                     Icons.arrow_forward_ios_rounded,
                     size: 16,
-                    color: colors[0],
+                    color: gradientColors[0],
                   ),
                 ),
               ],
@@ -186,6 +190,66 @@ class _MahasiswaCardState extends State<MahasiswaCard>
           ),
         ),
       ],
+    );
+  }
+}
+
+class MahasiswaListView extends StatelessWidget {
+  final List<MahasiswaModel> mahasiswaList;
+  final VoidCallback onRefresh;
+
+  const MahasiswaListView({
+    Key? key,
+    required this.mahasiswaList,
+    required this.onRefresh,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (mahasiswaList.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.school_outlined, size: 64, color: Colors.grey[400]),
+            const SizedBox(height: 16),
+            Text(
+              'Tidak ada data mahasiswa',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.grey[700],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    final gradients = AppConstants.dashboardGradients;
+
+    return RefreshIndicator(
+      onRefresh: () async => onRefresh(),
+      child: ListView.builder(
+        padding: const EdgeInsets.all(AppConstants.paddingMedium),
+        itemCount: mahasiswaList.length,
+        itemBuilder: (context, index) {
+          final mahasiswa = mahasiswaList[index];
+          return ModernMahasiswaCard(
+            mahasiswa: mahasiswa,
+            gradientColors: gradients[index % gradients.length],
+            onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Detail: ${mahasiswa.name}'),
+                  behavior: SnackBarBehavior.floating,
+                  duration: const Duration(seconds: 2),
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

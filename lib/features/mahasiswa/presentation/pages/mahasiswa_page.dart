@@ -41,7 +41,7 @@ class MahasiswaPage extends ConsumerWidget {
               padding: const EdgeInsets.all(16),
               itemCount: mahasiswaList.length,
               itemBuilder: (context, index) {
-                return MahasiswaCard(
+                return ModernMahasiswaCard(
                   mahasiswa: mahasiswaList[index],
                   gradientColors: AppConstants.dashboardGradients[index %
                       AppConstants.dashboardGradients.length],
