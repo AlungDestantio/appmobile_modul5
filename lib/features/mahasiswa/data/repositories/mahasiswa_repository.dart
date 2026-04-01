@@ -1,23 +1,23 @@
+import 'package:d4tivokasi/core/network/dio_client.dart';
 import 'package:d4tivokasi/features/mahasiswa/data/models/mahasiswa_model.dart';
 import 'package:dio/dio.dart';
 
 class MahasiswaRepository {
-  final Dio _dio = Dio();
+  final DioClient _dioClient;
 
-  /// Mendapatkan daftar mahasiswa menggunakan Dio
+  MahasiswaRepository({DioClient? dioClient})
+      : _dioClient = dioClient ?? DioClient();
+
+  /// get data daftar mahasiswa
   Future<List<MahasiswaModel>> getMahasiswaList() async {
-    final response = await _dio.get(
-      'https://jsonplaceholder.typicode.com/comments',
-      options: Options(headers: {'Accept': 'application/json'}),
-    );
-
-    if (response.statusCode == 200) {
+    try {
+      final Response response = await _dioClient.dio.get('/comments');
       final List<dynamic> data = response.data;
-      print(data); // Debug: Tampilkan data yang sudah di-decode
       return data.map((json) => MahasiswaModel.fromJson(json)).toList();
-    } else {
-      print('Error: ${response.statusCode}');
-      throw Exception('Gagal memuat data mahasiswa: ${response.statusCode}');
+    } on DioException catch (e) {
+      throw Exception(
+        'Gagal memuat data mahasiswa: ${e.response?.statusCode} - ${e.message}',
+      );
     }
   }
 }
